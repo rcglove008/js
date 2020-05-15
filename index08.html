@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+	    <div class="panel-body form-inline">
+		<input type="" name="id" v-model="id">
+		<input type="" name="pinbai" v-model="name">
+		<input type="" name="canshu" v-model="cs">
+		<input type="" name="jiage" v-model="jg" >
+		<input type="button" value="添加" @click="add">
+	    </div>
+	     <div class="panel-body form-inline ">
+	     请输入搜索内容：
+		<input type="" name="id" v-model="nr">
+	    </div>
+
+		<table style="width:760px; border-radius: 10px ;border-style:solid;" >
+			<tr>
+					<td style=" border-style:dotted;border-width:1px; ">id</td>
+					<td style=" border-style:dotted;border-width:1px; ">品牌</td>
+					<td style=" border-style:dotted;border-width:1px; ">参数</td>
+					<td style=" border-style:dotted;border-width:1px; ">价格</td>
+					<td style=" border-style:dotted;border-width:1px; ">删除</td>
+			</tr>
+			<!-- 之前是 通过数据arr 直接拿到 现在通过search(nr)方法获取 -->
+			<!-- 执行for 循环 保存新数据  -->
+			<tr v-for="itme in search(nr)" :key="itme.id">
+					<td style=" border-style:dotted;border-width:1px; ">{{itme.id}}</td>
+					<td style=" border-style:dotted;border-width:1px; ">{{itme.name}}</td>
+					<td style=" border-style:dotted;border-width:1px; ">{{itme.cs}}</td>
+					<td style=" border-style:dotted;border-width:1px; ">{{itme.jg}}</td>
+					<td style=" border-style:dotted;border-width:1px; ">
+						<a href="#" @click.prevent ="del(itme.id)">删除</a>
+					</td>
+			</tr>
+			<p value="timeNow()"></p>
+		</table>
+
+	</div>
+
+<script type="text/javascript">
+//创建实力VUE  
+//在浏览器内存 多了一个vue 构造函数
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+
+	data:{
+		nr:'',
+		flag:true,
+	    list:[1,2,4,5,6,7,8,9,0],
+	    id:'',
+	    name:'',
+	    cs:'',
+	    jg:'',
+		arr:[
+			{id:1,name:'张三',cs:'极速',jg:'60'},
+			{id:2,name:'莱斯',cs:'极速2',jg:'30'},
+			{id:3,name:'瓦杜',cs:'极速3',jg:'160'},
+			{id:4,name:'助理',cs:'极速4',jg:'60'}
+				]
+		},
+	methods:{
+		del(id){
+			//获取ID 找到索引
+			//找到索引删除 直接调用 数组splice 方法
+			//splice(index,len,[item])  
+			//index:数组开始下标 ，len: 替换/删除的长度，item:替换的值，删除操作的话 item为空
+			//找到id 等于 传过来的参数ID 
+			console.log(id);
+			//-----------------------
+			// this.arr.some((item,i)=>{
+			// 	if (item.id==id) {
+			// 		console.log('索引'+i);
+			// 		this.arr.splice(i,1);
+			// 		return true;
+			// 	}
+			// })
+			// ------------------------
+			// -----------方法二-------------
+			var index=this.arr.findIndex(item=>{
+				if (item.id==id) {
+					return true;
+				}
+			})
+			this.arr.splice(index,1);
+			console.log(index)
+			// -----------方法三-------------
+		},
+		add(){
+			console.log('add')
+			var arrobj={id:this.id,name:this.name,cs:this.cs,jg:this.jg }
+			this.arr.push(arrobj)
+			this.id=this.name=this.cs=this.jg="";//填完清空
+		},
+		search(nr){
+			var newArr=[]
+			this.arr.forEach(item => {
+				if (item.name.indexOf(nr)!=-1) {
+					newArr.push(item)
+				}
+			})
+		   return newArr
+		}
+	}
+})
+</script>
+
+</body>
+</html>
