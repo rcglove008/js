@@ -99,13 +99,26 @@ var vm=new Vue({
 			this.id=this.name=this.cs=this.jg="";//填完清空
 		},
 		search(nr){
-			var newArr=[]
-			this.arr.forEach(item => {
-				if (item.name.indexOf(nr)!=-1) {
-					newArr.push(item)
-				}
-			})
-		   return newArr
+			//----对数组遍历
+			// var newArr=[]
+			// this.arr.forEach(item => {
+			// 	if (item.name.indexOf(nr)!=-1) {
+			// 		newArr.push(item)
+			// 	}
+			// })
+		    //   return newArr
+		    //   注意：forEach  some  filter findIndex 这些都属于数组新方法
+		    //   都会对数组的每一项进行遍历 执行相关操作
+		   return this.arr.filter(item=>{
+		    		//if (item.name.indexOf(nr)!=-1) 
+		    		//注意 ES6 为字符串提供新方法叫 string.prototype.includes('要包含的字符串')
+		    		//如果包含返回true 否则 false
+		    		if (item.name.includes(nr)){
+
+						return item
+		    		}
+
+		    })
 		}
 	}
 })
