@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue 插值 过滤器 日期格式化</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<!-- 可以拼接多个管道符 -->
+	    <p>{{msg|names('邪恶')|mores(2,20)}}</p>
+		<p>{{msg|mores(2,20)}}</p>
+		<p>{{dates|formatDate}}</p>
+
+	</div>
+
+<script type="text/javascript">
+//过滤器的定义语法
+//Vue.filter('过滤器的名称'，function(data){})
+//过滤器调用时候的格式 {{name|过滤器的名称}}
+//过滤器第一个参数 已经被规定死了 永远都是过滤器管道符前面 传递过来的数据
+//--------------------
+Vue.filter('names',function(data,srt){
+	//字符串replace方法 第一个可以写参数‘字符串’ 还可以写正则/字符串/g (g代表全局)
+	 return  data.replace(/傻傻/g,srt)
+})
+//----解决内容太多更多现实(参数传递截取开始字段number1，截取长度number2)....
+Vue.filter('mores',function(data,number1,number2){
+	//字符串replace方法 第一个可以写参数‘字符串’ 还可以写正则/字符串/g (g代表全局)
+	 return  data.slice(number1,number2) + '....'
+})
+//--------------------
+Vue.filter('formatDate',function(date){
+	//根据给定的时间字符串 获得时间
+	//yyyy--mm--dd
+	// var dt =new Date(date)
+	// var y=dt.getFullYear()
+	// var m=dt.getMonth()+1
+	// var d=dt.getDate()
+	// return  y+'-'+ m +'-'+d
+    var y = date.getFullYear();
+	var m = date.getMonth() + 1;
+	m = m < 10 ? ('0' + m) : m;
+	var d = date.getDate();
+	d = d < 10 ? ('0' + d) : d;
+	var h = date.getHours();
+	h=h < 10 ? ('0' + h) : h;
+	var minute = date.getMinutes();
+	minute = minute < 10 ? ('0' + minute) : minute;
+	var second=date.getSeconds();
+	second=second < 10 ? ('0' + second) : second;
+	return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+})
+
+//--------------------
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		dates:new Date(),
+		msg:'曾经我还是那个少年，傻傻的 ，傻傻的，男孩'
+	}
+})
+</script>
+
+</body>
+</html>
