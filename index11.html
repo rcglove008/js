@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习-Vue-键盘焦点 执行 自定义指令 指令函数简写</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+	    <div class="panel-body form-inline">
+		<input type="" name="id" v-model="id" v-focus >
+		<input type="" name="pinbai" v-model="name" @keyup.alt.up="add">
+		<!-- //按键提示符enter\tab\delete\esc\space\up\down\left\right (键盘值)-->
+		<!-- //按键提示符组合键使用  alt.up (组合键 测试通过)-->
+		<input type="button" value="添加" @click="add">
+	    </div>
+
+		<table style="width:760px; border-radius: 10px ;border-style:solid;" >
+			<tr>
+					<td style=" border-style:dotted;border-width:1px; ">id</td>
+					<td style=" border-style:dotted;border-width:1px; ">品牌</td>
+				
+					<td style=" border-style:dotted;border-width:1px; ">删除</td>
+			</tr>
+			<tr v-for="itme in arr" :key="itme.id">
+					<td style=" border-style:dotted;border-width:1px; " >{{itme.id}}</td>
+					<td style=" border-style:dotted;border-width:1px; ">{{itme.name}}</td>
+					<td style=" border-style:dotted;border-width:1px; ">
+					<a href="#" @click.prevent ="del(itme.id)">删除</a></td>
+			</tr>
+			
+		</table>
+			<div class="panel-body form-inline " v-color="'pink'">
+		     请输入搜索内容：<input type="text"  v-model="nr" v-color="'blue'" >
+		    </div>
+	</div>
+	<div id="app2">
+		<p v-d_color="'red'"  > {{msg}}</p>
+		<p v-fontsize="'40px'"  > {{msg}}</p>
+	</div>
+
+<script type="text/javascript">
+
+		//使用Vue.directive() 定义全局指令 v-focus
+		//其中：参数1：指令的名称，注意在定义的时候不需要加v-前缀
+		//参数2 是一个对象，这个对象身上，有一些指令相关的函数，这些函数在特定的阶段，执行相关的操作
+	Vue.directive('focus',{
+		bind:function (el) {//Vue中每当指令绑定到元素上的时候，会执行这个bind函数 只执行一次
+		//注意：每个函数中，第一个参数永远是el,表示绑定指令的那个元素 这个el参数 是一个原生js对象
+		//在元素刚绑定了指令的时候 还没有插入到DOM中去 这个时候 调用focus 方法没有作用
+		//因为一个元素 只能插入DOM之后才能获取焦点
+		//el.focus()
+
+		},
+		inserted:function (el) {
+		//inserted 表示元素 插入到DOM 中的时候 会执行inserted 函数[触发1次]
+		//和js行为相关的操作最好在inserted 中去执行放置js行为不生效
+		 el.focus()
+		},
+		updated:function () {//当VNode更新的时候 会执行updated,可能会触发多次
+
+		},
+
+	})
+
+	Vue.directive('color',{
+		bind:function (el,b) {
+		//样式只要通过指令绑定给了元素 不管元素有没有被插入到页面中去 这个元素肯定有了一个内联的样式
+		//将来元素会显示到页面中，
+		//和样式相关的操作 一般都可以在bind执行
+		console.log(b)//获取的b是形参可以是任意
+		console.log(b.expression)
+		el.style.color=b.value		
+		},
+		inserted:function (el) {//inserted 表示元素 插入到DOM 中的时候 会执行inserted 函数[触发1次]
+		 el.focus()
+		},
+		updated:function () {//当VNode更新的时候 会执行updated,可能会触发多次
+		},
+
+	})
+
+//创建实力VUE  
+//在浏览器内存 多了一个vue 构造函数
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+
+	data:{
+
+		flag:true,
+	    list:[1,2,4,5,6,7,8,9,0],
+	    id:'',
+	    name:'',
+	    nr:'',
+		arr:[
+			{id:1,name:'张三',cs:'极速',jg:'60'},
+			{id:2,name:'莱斯',cs:'极速2',jg:'30'},
+			{id:3,name:'瓦杜',cs:'极速3',jg:'160'},
+			{id:4,name:'助理',cs:'极速4',jg:'60'}
+				]
+
+		},
+	methods:{
+		del(id){
+			//获取ID 找到索引
+			//找到索引删除 直接调用 数组splice 方法
+			//splice(index,len,[item])  
+			//index:数组开始下标 ，len: 替换/删除的长度，item:替换的值，删除操作的话 item为空
+			//找到id 等于 传过来的参数ID 
+			console.log(id);
+			//-----------------------
+			// this.arr.some((item,i)=>{
+			// 	if (item.id==id) {
+			// 		console.log('索引'+i);
+			// 		this.arr.splice(i,1);
+			// 		return true;
+			// 	}
+			// })
+			// ------------------------
+			// -----------方法二-------------
+			var index=this.arr.findIndex(item=>{
+				if (item.id==id) {
+					return true;
+				}
+			})
+			this.arr.splice(index,1);
+			console.log(index)
+			// -----------方法三-------------
+		},
+		add(){
+			console.log('add')
+			var arrobj={id:this.id,name:this.name,cs:this.cs,jg:this.jg }
+			this.arr.push(arrobj)
+			this.id=this.name=this.cs=this.jg="";//填完清空
+		}
+	}
+})
+var vm=new Vue({
+
+	el:"#app2", //表示当前我们NEW的vue 实力
+
+	data:{
+		msg:'表示当前我们双向绑定'
+	},
+	methods:{
+
+	},
+	directives:{
+	'fontweight':{
+		bind:function (el,b) {
+			el.style.fontWeight=b.value
+			}
+		},
+
+	'd_color':{
+		bind: function (el,b){
+			console.log(b.value)
+			el.style.color=b.value	
+			}
+		},
+	'dcolor': { //指令名要加上引号
+        bind: function (el, binding) {
+            el.style.color = binding.value
+            }
+        },
+        // -----简写 function等同于 bind 和 update 中去
+    'fontsize':function (el,b){
+    		//parseInt 字符串转换成整型
+    		console.log(parseInt(b.value))
+			el.style.fontSize = parseInt(b.value)+'px'
+  	  }
+
+	}
+	})
+</script>
+
+</body>
+</html>
