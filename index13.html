@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<!-- 依赖于Vue  -->
+	<!-- this. $http,jsonp  [Ajax] -->
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+	<div id="app">
+		<input type="button" name="" value="GET1 请求" @click="getinfo">
+		<input type="button" name="" value="GET2 请求" @click="getin">
+		<input type="button" name="" value="POST 请求" @click="postinfo">
+		<input type="button" name="" value="JSONP 请求" @click="jsonpinfo">
+		<input type="button" name="" value="axios 请求" @click="axios">
+		<div v-for="itme in resdata" >
+		<table>
+			<td style=" border-style:dotted;border-width:1px; ">{{itme.sid}}</td>
+			<td style=" border-style:dotted;border-width:1px; ">{{itme.text}}</td>
+			<td style=" border-style:dotted;border-width:1px; ">{{itme.name}}</td>
+			<td style=" border-style:dotted;border-width:1px; ">{{itme.header}}</td>
+			<td style=" border-style:dotted;border-width:1px; ">{{itme.passtime}}</td>
+		</table>
+
+		</div>
+	</div>
+
+<script type="text/javascript">
+//创建实力VUE  
+//在浏览器内存 多了一个vue 构造函数
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		msg:'123',
+		resdata:[]
+	},
+	methods:{
+		//axios 可变参数设置
+		axios(){axios.get('https://api.apiopen.top/getJoke',{
+			params:{
+				page:1,
+				count:2,
+				type:'video'
+			}
+		})
+		  .then( response=>{
+		    console.log(response.data);
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  });},
+		getinfo(){
+			this.$http.get('https://api.apiopen.top/getJoke?page=1&count=2&type=video').then(res=>{
+				this.resdata=res.body.result
+			},()=>console.log('请求失败处理'))
+		},
+		postinfo(){
+			//发起post 请求 application/x-wwww-form-urlencoded
+			//手动发起的Post请求 默认没有表单格式 所有有的服务器处理不了
+			this.$http.post('https://api.apiopen.top/getJoke?page=1&count=2&type=video',{},{emulateJSON:true}).then(res=>{
+				console.log( res.body );
+				console.log('post成功')
+			},function(){
+				console.log('post失败')
+			})
+		},
+		jsonpinfo(){
+			this.$http.jsonp('#',{}).then(res=>{
+					console.log(res)
+					},function(){console.log('失败')
+				})
+			},
+		getin(){
+            //发送get请求
+            this.$http.get('https://api.apiopen.top/musicRankingsDetails?type=1').then(function(res){
+            	console.log(res.body);
+                //document.write(res.body);    
+            },function(){
+                console.log('请求失败处理');
+            });
+         }
+	}
+})
+</script>
+
+</body>
+</html>
