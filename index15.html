@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习 VUE 创建组件</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<!-- 模块化：是从代码的的角度进行划分的 方便代码分层开发 保证每个功能模块的只能单一 -->
+<!-- 组件化：是从UI 界面角度进行划分的 前段的组件化 方便UI组件重用 -->
+	<div id="app">
+		<p>{{msg}}</p>
+		<!-- 使用组件 -->
+		<my-com></my-com>
+		<my-com1></my-com1>
+		<mycom2></mycom2>
+		<mycom3></mycom3>
+	</div>
+
+<!-- 在被#app 外面 使用template 元素，定义组件的模板HTML结构-->
+	<template id="tmp">
+		<div>
+			<h4> 使用template 元素 第三种方案，定义组件的模板HTML结构 </h4>
+			<h1>好用</h1>
+		</div>
+	</template>
+
+
+<script type="text/javascript">
+
+// -------------第一组件方案---------------------------
+//第一步 使用Vue.extend来创建全局的Vue组件
+var com1 = Vue.extend({
+	template:'<h3>这是使用vue.extend 创建的 组件</h3>'
+	//通过template 属性指定了组件要展示的HTML的结构
+})
+//第二部 使用Vue.component('组件的名称',创建出来的组件模板对象)
+//如果Vue.component 定义组件的时候，组件名称使用了驼峰中间要加-
+//如果全是小写 直接使用mycom 那就直接引用到<mycom></mycom>
+Vue.component('myCom',com1)
+//--------------第一种方案合并成一个-------------------
+Vue.component('myCom1',Vue.extend({
+	template:'<h3>这是使用vue.extend 创建的myCom1 组件</h3>'
+}))
+
+//--------------第二种方案合并成一个-------------------
+
+Vue.component('mycom2',{
+	//无论哪个
+	template:'<div><h3>这是使用vue.extend 创建的myCom2 组件</h3><h1>并排子元素 应包含在DIV 中</h1></div>'
+})
+
+//--------------第三种方案合并成一个-------------------
+
+Vue.component('mycom3',{
+	//无论哪个
+	template:'#tmp'
+})
+
+
+
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		msg:'123'
+	}
+})
+</script>
+
+</body>
+</html>
