@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习 component :is 多标签选择</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<style >
+	.v-enter,
+	.v-leave-to{
+		opacity: 0;
+		transform: translateX(150px);
+	}
+	.v-enter-active,
+	.v-leave-active{
+		transition: all 0.5s ease;
+	}
+	</style>
+</head>
+<body>
+	<div id="app">
+	   <!-- 两格组件 -->
+<!-- 		<a href=""  @click.prevent="flag=true">登录</a>
+		<a href=""  @click.prevent="flag=false">注册</a>
+		<login v-if="flag"></login>
+		<reg v-else="flag"></reg> -->
+		<!--  -->
+<!-- Vue提供了 component ，来展示对应名称的组件 -->
+<!-- component 是一个占位符 :is属性 可以用来指定要展示单独 组件名称 -->
+<a href=""  @click.prevent="comname='login'">登录1</a>
+<a href=""  @click.prevent="comname='reg'">注册</a>
+<a href=""  @click.prevent="comname='login'">注册</a>
+<transition mode="in-out"  >
+<!--mode属性 mode="out-in" 先出去再进来 -->
+<!-- 先出去再进来 -->
+<component :is="comname"></component>
+</transition>
+	</div>
+<!-- 总结 Vue 提供标签 -->
+<!-- component template(模板定义到网页部分) transition（过渡 单个元素） transtionGroup -->
+
+<script type="text/javascript">
+Vue.component('login',{
+	template:'<h2 >login</h2>'
+});
+Vue.component('reg',{
+	template:'<h2 >reg</h2>'
+});
+//创建实力VUE  
+//在浏览器内存 多了一个vue 构造函数
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		comname:'login',
+		flag:true,
+		msg:'123'
+	}
+})
+</script>
+
+</body>
+</html>
