@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习 父子组件传值</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<style >
+.ball {
+	margin-top: 20px;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	background-color: red;
+</style>
+</head>
+<body>
+	<div id="app">
+		<input type="button" value="加入购物车" @click="flag=!flag">
+		<transition 
+		@before-enter="beforeEnter"
+		@enter="enter"
+		@after-enter="afterEnter">
+		<div class="ball" v-if="flag"></div>
+		</transition>
+	</div>
+
+<script type="text/javascript">
+//创建实力VUE  
+//在浏览器内存 多了一个vue 构造函数
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		flag:false,
+		
+	},
+	methods:{
+		beforeEnter(el){
+			el.style.transform='translate(0,0)'
+		},
+		enter(el,done){
+			el.offsetWidth
+			el.style.transform='translate(150px,450px)'
+			el.style.transition='all 2s ease'
+			done()
+		},
+		afterEnter(el){
+			this.flag=!this.flag
+		}
+	}
+})
+</script>
+
+</body>
+</html>
