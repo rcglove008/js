@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+	<div id="app">
+		<comment-box @func="show"></comment-box>
+		
+		<ul class="list-group">
+			<li class="list-group-item" v-for="itme in list" :key="">
+			<span class="badge">评论人：{{itme.user}}</span>
+			{{itme.content}} 时间：{{itme.id|formatDate}}
+			</li>
+			
+		</ul>
+	</div>
+<template id="temp">
+<div>
+	<div class="form-group">
+	<label>评论人</label>
+	<input type="text" class="form-control" v-model="user">
+	</div>
+	<div class="form-group">
+	<label>评论内容：
+	{{NOnumber}}</label>
+	<textarea class="form-control" v-model="content" value="NOnumber"></textarea>
+	</div>
+	<div class="form-group">
+    <input type="button" value="发 表 提 交" class="btn btn-primary" @click="postcon" >
+	</div>
+</div>
+</template>
+
+<script type="text/javascript">
+var commentBox={
+	template:'#temp',
+	data(){return{
+		user:'',
+		content:'',
+		NOnumber:'请填数据'
+	}},
+	methods:{
+	postcon(){
+		if (this.user && this.content) {
+		this.$emit('func',this.user,this.content)
+		this.user=''
+		this.content=''
+
+		}else{
+		this.NOnumber="评论人或内容不能为空"
+		console.log(this.NOnumber)
+		}
+
+		}
+	}
+}
+
+Vue.filter('formatDate',function(inputTime){
+   var date = new Date(inputTime);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    h = h < 10 ? ('0' + h) : h;
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    second = second < 10 ? ('0' + second) : second;
+    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+})
+
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		msg:'测试',
+		list:[
+		{id:Date.now(),user:'李白',content:'天生我才'},
+		{id:Date.now(),user:'杜牧',content:'将进酒'},
+		{id:Date.now(),user:'杜甫',content:'我姓马'}
+		]
+	},
+	methods:{
+			show(data,data2){ 
+			var str={id:Date.now(),user:data,content:data2};
+			var list=json(localStorage.getItem('str'))
+			this.list.unshift(str)
+		}
+	},
+	components:{
+		commentBox,
+	}
+})
+</script>
+
+</body>
+</html>
