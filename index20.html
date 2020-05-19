@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习父组件向子组件传值【方法】</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<p>{{msg}}</p>
+		<p>{{datamsgFormSon}}</p>
+		<mylogin></mylogin>
+		<logo></logo>
+	<!--父组件 可以用引用子组件的时候通过属性（v-bind） 的形式把需要传递给子组件的数据，以属性绑定的形式
+	传递给子组件内部 供子组件使用 -->
+	<com v-bind:parenmsg="msg"></com>
+	<!-- 父组件往子组件传递方法 事件绑定机制 v-on 自定义一个事件之后 那么子组件通过某些方式传递进去这个方法-->
+	<com2 @func="show"></com2>
+
+	</div>
+
+
+	<template id="temp1">
+	<div>
+	  <H2> 这是COM2 子组件</H2>
+	  <input type="button" value="子组件按钮 父组件"  @click="myfun">
+	</div>
+	</template>
+
+<script type="text/javascript">
+//定义全局组件 Vue.component('组件名'，{template:'<h1></h1>'})
+//通过对象字面量的形式，定义了一个组件模板对象
+var login={
+	template:'<h1>模板html</h1>'
+}
+var logo={
+	template:'<h1>模板html_logo</h1>'
+}
+var com2={
+	template:'#temp1',
+	//通过制定一个ID 表示谁要加载这个制定ID的template元素内容 当做组件的HTML
+	data(){
+		return{
+			sonmsg:{name:'子组件小明',
+					age:6
+			}
+		}
+	},
+	methods:{
+		myfun(){
+		//当点击子组件的按钮如何调用父组件传递过来的func方法 并调用呢
+		//emit 是触发调用、发射的意思 （可以传多个参数）
+		// this.$emit('func',123,'第二参数')
+		  this.$emit('func',this.sonmsg)
+		}
+	}
+}
+
+
+//通过Vue.component 吧组件模板对象 注册为一个全局的Vue组件 同时为这个组件起了一个名称，可以让我们通过标签形式在页面中直接引入这个组件
+Vue.component('mylogin',login)
+
+
+
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+
+		msg:'--123父组件的数据--',
+		datamsgFormSon:''
+	},
+	methods:{
+		show(data){ 
+			// console.log('调用父组件身上的show方法'+data)
+			//console.log(data)
+			this.datamsgFormSon=data
+		}
+	},
+	components:{
+		com2,
+		//'组件的名称'：组件的模板对象
+		logo,
+		//经过演示 发现子组件，默认无法访问父组件中的data数据和methods中的方法
+		com:{
+			data(){//子组件 私有数据 【这里数据可读可写】
+				return{
+					title:'标题',
+					content:'内容'
+			}
+		},
+			//注意：组件中所有的Props中的数据都是通过父组件传递给子组件的
+			props:['parenmsg'] ,//唯一一个数据吧父组件传递过来的parentmsg属性，先在props数组定义一下，这样才能使用这个数据,数据只读的
+			template:"<h1>这是-{{title}}-子{{parenmsg}}组件</h1>"
+		}
+
+
+
+	}
+})
+</script>
+
+</body>
+</html>
