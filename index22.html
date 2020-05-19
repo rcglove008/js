@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习 ref </title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+	<input type="button" value="获取DOM元素" @click="getElement" ref="myid1" >
+		<p id="myid" ref="myid">今天天气预报</p>
+		<login ref="mylogin"></login>
+	</div>
+
+<script type="text/javascript">
+var login={
+	template:'<h1>登 录</h1>',
+	data(){
+		return{
+			msg:'son组件数据'
+		}
+	},
+	methods:{
+		show(){
+			console.log('子组件show')
+		}
+	}
+}
+
+//创建实力VUE  
+//在浏览器内存 多了一个vue 构造函数
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		msg:'123'
+	},
+	methods:{
+		getElement(){
+			//ref 单词reference 值类型 和引用类型 referenceError
+			console.log(this.$refs.myid.innerText)
+			console.log(this.$refs.mylogin.msg)
+			this.$refs.mylogin.show()
+
+			//console.log(document.getElementById('myid').innerText)
+			//
+		}
+
+	},
+	components:{
+		login
+	}
+})
+</script>
+
+</body>
+</html>
