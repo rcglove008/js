@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>路由经典布局</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="./js/vue-router.js"></script>
+	<style type="text/css">
+	.header{
+		height: 120px;
+		background-color: green;
+	}
+	h1{
+		margin: 0;
+		padding: 0;
+		font-size: 24px;
+	}
+	.conter{
+		display:flex; 
+		height: 650px;
+	
+	}
+	.left{
+		background-color: red;
+		flex: 2;
+	}
+	.main{
+		background-color: pink;
+		flex: 8;
+
+	}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<router-view></router-view>
+		<div class="conter">
+		<!-- left 这是字符串 -->
+		<router-view name="left"></router-view>
+		<router-view name="main"></router-view>
+		</div>
+	</div>
+
+<script type="text/javascript">
+var header={
+	template:'<h1 class="header">header头部</h1>'
+}
+
+var leftBox={
+	template:'<h1 class="left">leftBox左边栏</h1>'
+}
+
+var mainBox={
+	template:'<h1 class="main">mainBox主体</h1>'
+}
+
+var router=new VueRouter({
+	//route//命名试图
+	routes:[
+	{path:'/',components:{
+		'default':header,
+		'left':leftBox,
+		'main':mainBox
+		}	
+	}]
+
+})
+
+
+
+var vm=new Vue({
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+	},
+	router,
+})
+</script>
+
+</body>
+</html>
