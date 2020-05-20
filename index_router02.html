@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习路由的嵌套</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="./js/vue-router.js"></script>
+</head>
+<body>
+	<div id="app">
+	<router-link to="/account" tag="span">ACCOUNT
+	</router-link>
+	<router-view></router-view>
+	</div>
+
+	<template id="tmp1">
+		<div>
+			<h4> 这是Account 组件</h4>
+			<router-link to="/account/login" tag="span" >登录
+			</router-link>
+			<router-link to="/account/reg" tag="span">注册
+			</router-link>
+			<!-- 子路由嵌套 -->
+			<router-view></router-view>
+		</div>
+	</template>
+
+<script type="text/javascript">
+
+var account={template:'#tmp1'}
+//组件模板对象
+var login={
+	//可以传递多个参数
+	template:'<h3>VUE--LOGIN</h3>'
+}
+var reg={
+	template:'<h3>VUE 路由reg </h3>'
+}
+//创建一个路由对象 当导入vue-router包之后 在Windows全局对象中就有一路由构造函数叫routerObj
+//
+var router=new VueRouter({
+	//route//这个配置对象中的route 表示[路由匹配规则]的意思
+	routes:[
+	{path:'/account',
+	component:account,
+	//子路由嵌套 子路由路径前不要带/ 否则永远以根路径开始请求
+	children:[
+	{path:'login',component:login},
+	{path:'reg',component:reg}
+			]
+		}
+	]
+
+})
+
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		msg:'123'
+	},
+	methods:{},
+	//router:router
+	router,
+
+	//将路由规则对象 注册到vm实例上 又来监听url地址的地址变化，然后展示对应的组件
+	
+
+})
+</script>
+
+</body>
+</html>
