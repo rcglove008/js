@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习路由的基本使用</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="./js/vue-router.js"></script>
+
+</head>
+<body>
+	<div id="app">
+
+	<!-- <a href="#/login">登录</a>
+	<a href="#/reg">注册</a> -->
+	<!-- router-link 默认渲染A标签 -->
+	<router-link to="/login" tag="span">登录</router-link>
+	<router-link to="/reg" tag="span">注册</router-link>
+
+	<!-- 这是Vue.router 提供的元素专门用来当做占位符 将来路由规则匹配到组件就会展示到这个router-view -->
+	<!-- -->
+	<router-view></router-view>
+	</div>
+
+<script type="text/javascript">
+//组件模板对象
+var login={
+	template:'<h1>VUE 路由练习 login</h1>'
+}
+var reg={
+	template:'<h1>VUE 路由练习 reg </h1>'
+}
+//创建一个路由对象 当导入vue-router包之后 在Windows全局对象中就有一路由构造函数叫routerObj
+//
+var routerObj=new VueRouter({
+	//route//这个配置对象中的route 表示[路由匹配规则]的意思
+	routes:[//路由配备规则 这个规则对象 身上有两个必须的属性
+	//属性1 是path 表示监听那个路由链接地址
+	//属性2 是compinent 表示如果 路由是前面匹配到的path 则展示component属性对应的那个组件
+	//注意 component 必须是组件模板对象 不是能组件的名称
+	//{path:'/',component:login},//可以决绝默认首页的问题[不推荐]
+	{path:'/',redirect:'/login'},//redirect 重定向
+	{path:'/login',component:login},
+	{path:'/reg',component:reg}
+	]
+})
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		msg:'123'
+	},
+	methods:{},
+	router:routerObj
+	//将路由规则对象 注册到vm实例上 又来监听url地址的地址变化，然后展示对应的组件
+
+})
+</script>
+
+</body>
+</html>
