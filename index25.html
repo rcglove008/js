@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+	<input type="text" value="" v-model="fname" @keyup="full">
+	<input type="text" value="" v-model="lname" @keyup="full">
+	<input type="text" value='' v-model="name">
+	</div>
+
+<script type="text/javascript">
+//创建实力VUE  
+//在浏览器内存 多了一个vue 构造函数
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		fname:"",
+		lname:"",
+		name:""
+	},
+	methods:{
+		full(){
+			this.name = this.fname + this.lname 
+
+		}
+	}
+})
+</script>
+
+</body>
+</html>
