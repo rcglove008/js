@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学习</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+	<input type="text" value="" v-model="fname" >
+	<input type="text" value="" v-model="lname" >
+	<input type="text" value='' v-model="name"  >
+	</div>
+
+<script type="text/javascript">
+//创建实力VUE  
+//在浏览器内存 多了一个vue 构造函数
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		fname:'',
+		lname:''
+	},
+	methods:{},
+	watch:{},
+	computed:{
+		//在computed 中 可以定义一些属性 这些属性叫做【计算属性】计算属性的本质就是一个方法 只不过我们在使用这些计算属性的时候，是吧他们的名称当做属性来使用并不会把计算属性当做方法去调用
+		//
+		//注意1： 计算属性 在引用的时候 一定不要加（）
+		//直接把它当作普通属性去使用就好
+		//注意2：只要计算属性 这个function 内部，所用到任何data 中的数据发送编发 就会立即重新计算这个计算属性的值
+		//注意3：计算属性的求值结果 会被缓存起来 方便下次直接调用；如果计算属性方法中 所以来的任何数据，都没发生过变化，则不会重新对计算属性求值；
+		'name':function(){
+			// 利用计算属性一定要有返回值return
+			return this.fname+this.lname
+		}
+	}
+
+})
+</script>
+
+</body>
+</html>
