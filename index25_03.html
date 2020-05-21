@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>复习路由</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<!-- 1\导路由包 -->
+	<script src="./js/vue-router.js"></script>
+</head>
+
+<body>
+	<div id="app">
+		<p>{{msg}}</p>
+		<!-- 第6步路由链接 -->
+		<router-link to="/login">登录</router-link>
+		<router-link to="/reg">注册</router-link>
+		<!-- 第5步挂载容器 -->
+		<router-view></router-view>
+	</div>
+
+<script type="text/javascript">
+// 2 创建子组件
+var login={
+	template:'<h2>登录子组件login 来来去去</h2>'
+}
+var reg={
+	template:'<h2>登录子组件reg 去去来来</h2>'
+}
+// 3创建一个路由对象
+var router=new VueRouter({
+	// 路由规则
+	routes:[
+			{path:'/',redirect:'/login'},
+			// 默认路由第7步
+			{path:'/login',component:login},
+			{path:'/reg',component:reg}
+	],
+
+	linkActiveClass:'myactive'//和激活相关的类
+
+})
+var vm=new Vue({
+
+	el:"#app", //表示当前我们NEW的vue 实力
+	data:{
+		msg:'123'
+	},
+	// 第4步 添加router
+	router,
+	watch:{
+		// this.$route.path
+		// 监控非DOM 事件的改变
+		'$route.path':function(newVal){
+		// 	if (newVal==='/login'){
+		// 		console.log('欢迎登陆')
+		// 	}else if(newVal==='/reg'){
+		// 		console.log('欢迎注册')
+		// 	}
+		if (newVal==='/login'){
+				console.log('欢迎登陆')
+			}else{
+				console.log('欢迎注册')
+			}
+	
+
+
+
+
+		 }
+	}
+})
+</script>
+
+</body>
+</html>
