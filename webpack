@@ -1,0 +1,99 @@
+
+
+
+代码转换，文件优化，代码分割，模块合并，自动刷新，代码校验，自动发布等特点
+
+好了不说啦开始基本配置吧
+
+在开始配置之前，先新建一个文件夹webpc，在根目录下写src(js, css,.index.html,main.js等)，如下：
+
+
+
+除了建好文件夹，还有就是安装node,cnpm ，webpack,
+
+第一步：初始化：cnpm init -y
+
+第二步：如果要导入jquery包用如下命令： cnpm install jquery -S
+
+              index.html:
+
+               
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webpack</title>
+   
+</head>
+<body>
+<div>
+    <ul>
+        <li>第1个</li>
+        <li>第2个</li>
+        <li>第3个</li>
+        <li>第4个</li>
+    </ul>
+</div>
+</body>
+</html>
+main.js:
+
+//js的入口文件
+//导入Jquery
+import $ from 'jquery'
+//页面无法解析es6代码，因此报错
+$(function () {
+    $('li:odd').css('backgroundColor','red');
+    $('li:even').css('backgroundColor',function () {
+        return '#'+'D97634';
+    })
+})
+第三步：当发现页面引入main.js中含有es6语法时，es6无法被浏览器解析。则将main.js打包放入dist中,命令如下：
+
+               webpack  .\src\main.js  -o .\dist\bundle.js
+
+               每次修改main.js文件都用上面的命令重新打包，这显然比较麻烦，那怎样只用webpack就可以实现上述功能呢？
+
+              在根目录下新建webpack.config.js，配置入口，出口文件。这里不细讲配置了。配置的方法可以查到好多。。。
+
+  webpack.config.js:
+
+const path=require('path');
+module.exports={
+    entry:path.join(__dirname,'./src/main.js'),//指定要打包的文件
+    output:{
+        path:path.join(__dirname,'./dist'),//指定打包输出文件目录
+        filename:'bundle.js'//指定输出的文件名
+    }
+};
+配置完后就可以，通过命令行输入：webpack来更新了
+
+第四步：先全局安装webpack-dev-server
+
+               cnpm install -g webpack-dev-server
+
+               再局部安装：cnpm install --save-dev webpack-dev-server
+
+              4.1 手动修改package.json配置的script标签：
+
+                   "dev":"webpack-dev-server "
+
+              4.2 删除bundle.js，修改页面的src="/bundle.js"
+
+                     <script src="/bundle.js"></script>
+
+                    注意：这里引入的bundle.js不再是dist中本地存放的文件，而是以一种虚拟的形式存放在内存中。所以                                   找不到bundle.js.
+                    
+
+第五步：cnpm i 安装依赖
+
+
+第六步：cnpm run dev即可运行。
+
+那么如何默认进入到index.html呢，以及实时更新，修改端口呢？
+
+在项目根目录的package.json文件的scripts配置中添加配置，如
+　　"dev":"webpack-dev-server --hot --inline --open --content-base  '/src/'",
+
+
